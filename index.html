@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#101d45" />
+  <title>SpendSmart — Smart Spending. Better Rewards.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://kit.fontawesome.com/4c2d7a5b2e.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div id="authScreen" class="auth-screen hidden">
+    <div class="auth-art">
+      <div class="brand brand-light"><span class="brand-mark"><i class="fa-solid fa-wallet"></i></span><span>Spend<span>Smart</span></span></div>
+      <div><p class="eyebrow">YOUR MONEY, IN BETTER SHAPE</p><h1>Make every<br>spend count.</h1><p>Track cards, understand your habits and find better rewards — all in one place.</p></div>
+      <div class="auth-art-bottom"><i class="fa-solid fa-shield-halved"></i> Frontend demo · No real banking connection</div>
+    </div>
+    <div class="auth-panel">
+      <form id="authForm" class="auth-form">
+        <p class="eyebrow" id="authEyebrow">WELCOME BACK</p><h2 id="authTitle">Sign in to SpendSmart</h2><p class="muted" id="authSubtitle">Your smarter spending journey continues here.</p>
+        <label id="nameField" class="field hidden">Full name<input id="authName" autocomplete="name" placeholder="Your name"></label>
+        <label class="field">Email address<input id="authEmail" type="email" required autocomplete="email" placeholder="you@example.com"></label>
+        <label class="field">Password<div class="password-wrap"><input id="authPassword" type="password" required autocomplete="current-password" placeholder="Enter password"><button type="button" class="password-toggle" id="togglePassword"><i class="fa-regular fa-eye"></i></button></div></label>
+        <label id="confirmField" class="field hidden">Confirm password<input id="authConfirm" type="password" placeholder="Re-enter password"></label>
+        <div class="auth-options"><label class="check-label"><input type="checkbox" id="rememberMe"> Remember me</label><button type="button" class="text-button" id="forgotLink">Forgot password?</button></div>
+        <button class="btn btn-primary btn-full" type="submit" id="authSubmit">Sign in <i class="fa-solid fa-arrow-right"></i></button>
+        <p class="auth-switch" id="authSwitch">New to SpendSmart? <button type="button" class="text-button" id="switchAuth">Create an account</button></p>
+        <p class="demo-note"><i class="fa-solid fa-circle-info"></i> Demo login: demo@spendsmart.in / demo123</p>
+        <p class="tiny muted">Demo-only authentication stored in this browser. Do not use a real password.</p>
+      </form>
+    </div>
+  </div>
+
+  <div id="app" class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand"><span class="brand-mark"><i class="fa-solid fa-wallet"></i></span><span>Spend<span>Smart</span></span></div>
+      <div class="workspace-label">WORKSPACE</div>
+      <nav class="side-nav" id="sideNav">
+        <button class="nav-item active" data-page="dashboard"><i class="fa-solid fa-grid-2"></i><span>Dashboard</span></button>
+        <button class="nav-item" data-page="cards"><i class="fa-regular fa-credit-card"></i><span>My Cards</span></button>
+        <button class="nav-item" data-page="expenses"><i class="fa-solid fa-arrow-trend-up"></i><span>Expense Tracker</span></button>
+        <button class="nav-item" data-page="bills"><i class="fa-regular fa-calendar-check"></i><span>Bill Payments</span><span class="nav-count" id="billCount">2</span></button>
+        <button class="nav-item" data-page="rewards"><i class="fa-solid fa-gift"></i><span>Rewards</span></button>
+        <button class="nav-item" data-page="recommend"><i class="fa-solid fa-wand-magic-sparkles"></i><span>Smart Recommendation</span><span class="nav-new">AI</span></button>
+        <button class="nav-item" data-page="insights"><i class="fa-solid fa-chart-pie"></i><span>Spending Insights</span></button>
+        <button class="nav-item" data-page="family"><i class="fa-solid fa-people-group"></i><span>Family Dashboard</span></button>
+        <button class="nav-item" data-page="security"><i class="fa-solid fa-shield-halved"></i><span>Security Center</span></button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="help-card"><div class="help-icon"><i class="fa-regular fa-lightbulb"></i></div><strong>Make smarter moves</strong><p>Find the best card for your next purchase.</p><button data-go="recommend">Try recommendation <i class="fa-solid fa-arrow-right"></i></button></div>
+        <button class="nav-item" data-page="settings"><i class="fa-solid fa-sliders"></i><span>Settings</span></button>
+        <button class="nav-item logout-link" id="logoutBtn"><i class="fa-solid fa-arrow-right-from-bracket"></i><span>Log out</span></button>
+        <div class="sidebar-foot">© 2026 SpendSmart <span>Made for smarter living</span></div>
+      </div>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar">
+        <button class="icon-btn mobile-menu" id="mobileMenu" aria-label="Open menu"><i class="fa-solid fa-bars"></i></button>
+        <div class="breadcrumb"><span>Workspace</span><i class="fa-solid fa-chevron-right"></i><strong id="pageCrumb">Dashboard</strong></div>
+        <div class="top-actions">
+          <div class="global-search"><i class="fa-solid fa-magnifying-glass"></i><input id="globalSearch" placeholder="Search anything..."><kbd>⌘ K</kbd></div>
+          <button class="icon-btn notification-btn" id="notificationBtn" aria-label="Notifications"><i class="fa-regular fa-bell"></i><b></b></button>
+          <div class="profile-menu"><button class="profile-trigger" id="profileTrigger"><span class="avatar" id="topAvatar">A</span><span class="profile-copy"><strong id="topName">Alex Morgan</strong><small>Personal account</small></span><i class="fa-solid fa-chevron-down"></i></button><div class="profile-dropdown hidden" id="profileDropdown"><button data-page="settings"><i class="fa-regular fa-user"></i> My profile</button><button id="profileLogout"><i class="fa-solid fa-arrow-right-from-bracket"></i> Log out</button></div></div>
+        </div>
+      </header>
+
+      <div class="page-wrap">
+        <section class="page active" id="page-dashboard">
+          <div class="page-heading"><div><p class="eyebrow">FRIDAY, OCTOBER 30, 2026</p><h1>Good morning, <span id="greetingName">Alex</span> <span class="wave">✦</span></h1><p class="muted">Here's your financial snapshot for this month.</p></div><div class="heading-actions"><button class="btn btn-outline" id="exportDashboard"><i class="fa-solid fa-download"></i> Export report</button><button class="btn btn-primary" data-modal="transaction"><i class="fa-solid fa-plus"></i> Add expense</button></div></div>
+          <div class="overview-grid">
+            <article class="metric-card"><div class="metric-top"><span>Total expenses</span><span class="metric-icon blue"><i class="fa-solid fa-arrow-trend-up"></i></span></div><h2 id="metricExpenses">₹0</h2><div class="metric-foot"><span class="trend positive" id="expenseTrend"><i class="fa-solid fa-arrow-down"></i> 8.2%</span><span>vs last month</span></div></article>
+            <article class="metric-card"><div class="metric-top"><span>Available credit</span><span class="metric-icon violet"><i class="fa-regular fa-credit-card"></i></span></div><h2 id="metricAvailable">₹0</h2><div class="metric-foot"><span class="metric-neutral" id="utilizationText">0% utilization</span><span>across all cards</span></div></article>
+            <article class="metric-card"><div class="metric-top"><span>Rewards earned</span><span class="metric-icon amber"><i class="fa-solid fa-gift"></i></span></div><h2 id="metricRewards">0</h2><div class="metric-foot"><span class="trend positive"><i class="fa-solid fa-arrow-up"></i> 12.4%</span><span>points this month</span></div></article>
+            <article class="metric-card"><div class="metric-top"><span>Cashback earned</span><span class="metric-icon green"><i class="fa-solid fa-indian-rupee-sign"></i></span></div><h2 id="metricCashback">₹0</h2><div class="metric-foot"><span class="trend positive"><i class="fa-solid fa-arrow-up"></i> 6.8%</span><span>this month</span></div></article>
+          </div>
+          <div class="dashboard-grid">
+            <article class="panel spending-panel"><div class="panel-heading"><div><h3>Spending overview</h3><p class="muted">Track where your money goes</p></div><select id="spendingPeriod" class="select-compact"><option value="6">Last 6 months</option><option value="3">Last 3 months</option><option value="12">Last 12 months</option></select></div><div class="chart-wrap"><canvas id="monthlyChart"></canvas></div></article>
+            <article class="panel category-panel"><div class="panel-heading"><div><h3>Spending by category</h3><p class="muted">This month's breakdown</p></div><button class="more-btn" data-page="insights"><i class="fa-solid fa-arrow-up-right-from-square"></i></button></div><div class="donut-wrap"><canvas id="categoryChart"></canvas><div class="donut-center"><strong id="donutTotal">₹0</strong><span>Total spend</span></div></div><div id="categoryLegend" class="category-legend"></div></article>
+          </div>
+          <div class="dashboard-grid lower-grid">
+            <article class="panel transactions-panel"><div class="panel-heading"><div><h3>Recent transactions</h3><p class="muted">Your latest card activity</p></div><button class="link-button" data-page="expenses">View all <i class="fa-solid fa-arrow-right"></i></button></div><div class="table-scroll"><table><thead><tr><th>Merchant</th><th>Category</th><th>Date</th><th>Amount</th></tr></thead><tbody id="recentTransactions"></tbody></table></div></article>
+            <article class="panel bills-panel"><div class="panel-heading"><div><h3>Upcoming bills</h3><p class="muted">Stay ahead of due dates</p></div><button class="link-button" data-page="bills">View all <i class="fa-solid fa-arrow-right"></i></button></div><div id="upcomingBills" class="upcoming-list"></div></article>
+          </div>
+        </section>
+
+        <section class="page" id="page-cards">
+          <div class="page-heading"><div><p class="eyebrow">YOUR CREDIT WALLET</p><h1>My cards</h1><p class="muted">All your cards, limits and benefits in one place.</p></div><button class="btn btn-primary" data-modal="card"><i class="fa-solid fa-plus"></i> Add new card</button></div>
+          <div class="mini-stats" id="cardStats"></div><div class="cards-grid" id="cardsGrid"></div>
+        </section>
+
+        <section class="page" id="page-expenses">
+          <div class="page-heading"><div><p class="eyebrow">KNOW WHERE IT GOES</p><h1>Expense tracker</h1><p class="muted">A clearer view of your everyday spending.</p></div><div class="heading-actions"><button class="btn btn-outline" id="exportCsv"><i class="fa-solid fa-file-csv"></i> Export CSV</button><button class="btn btn-primary" data-modal="transaction"><i class="fa-solid fa-plus"></i> Add expense</button></div></div>
+          <div class="mini-stats" id="expenseStats"></div><article class="panel table-panel"><div class="filter-row"><div class="filter-search"><i class="fa-solid fa-magnifying-glass"></i><input id="transactionSearch" placeholder="Search merchant or description"></div><select id="categoryFilter"><option value="">All categories</option></select><select id="methodFilter"><option value="">All payment methods</option><option>Credit Card</option><option>Debit Card</option><option>UPI</option><option>Cash</option></select><select id="sortFilter"><option value="newest">Newest first</option><option value="oldest">Oldest first</option><option value="high">Highest amount</option><option value="low">Lowest amount</option></select></div><div class="table-scroll"><table><thead><tr><th>Transaction</th><th>Category</th><th>Payment method</th><th>Card</th><th>Date</th><th>Amount</th><th></th></tr></thead><tbody id="transactionRows"></tbody></table></div><div class="table-foot" id="transactionCount"></div></article>
+        </section>
+
+        <section class="page" id="page-bills">
+          <div class="page-heading"><div><p class="eyebrow">NEVER MISS A PAYMENT</p><h1>Bill payments</h1><p class="muted">Manage due dates and keep your payments on track.</p></div><button class="btn btn-primary" data-modal="bill"><i class="fa-solid fa-plus"></i> Add bill</button></div>
+          <div class="mini-stats" id="billStats"></div><article class="panel table-panel"><div class="panel-heading"><div><h3>All bills</h3><p class="muted">Payment status and due dates</p></div><select id="billFilter" class="select-compact"><option value="">All bills</option><option value="Pending">Pending</option><option value="Paid">Paid</option></select></div><div class="table-scroll"><table><thead><tr><th>Card / bill</th><th>Bill amount</th><th>Minimum due</th><th>Due date</th><th>Status</th><th>Actions</th></tr></thead><tbody id="billRows"></tbody></table></div></article>
+          <div class="notice-strip"><i class="fa-solid fa-circle-info"></i><span>Payments are simulated for this project demo. No money is transferred and no bank account is contacted.</span></div>
+        </section>
+
+        <section class="page" id="page-rewards">
+          <div class="page-heading"><div><p class="eyebrow">EVERY POINT ADDS UP</p><h1>Rewards & cashback</h1><p class="muted">See what you've earned and how you're using it.</p></div><button class="btn btn-primary" data-modal="reward"><i class="fa-solid fa-plus"></i> Record reward</button></div>
+          <div class="mini-stats" id="rewardStats"></div><div class="dashboard-grid"><article class="panel"><div class="panel-heading"><div><h3>Rewards by card</h3><p class="muted">Points balance across your wallet</p></div></div><div id="rewardByCard" class="reward-card-list"></div></article><article class="panel"><div class="panel-heading"><div><h3>Recent reward activity</h3><p class="muted">Earnings and redemptions</p></div></div><div id="rewardHistory" class="activity-list"></div></article></div>
+        </section>
+
+        <section class="page" id="page-recommend">
+          <div class="page-heading"><div><p class="eyebrow">THE SMARTER WAY TO PAY</p><h1>Smart card recommendation</h1><p class="muted">Find the card that could give you the most value on your next purchase.</p></div></div>
+          <div class="recommend-layout"><article class="panel recommend-form"><div class="recommend-intro"><span class="sparkle-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></span><div><h3>Let's optimize your purchase</h3><p class="muted">Tell us a little about what you're buying.</p></div></div><form id="recommendForm"><label class="field">Purchase amount <div class="input-prefix"><span>₹</span><input type="number" id="purchaseAmount" min="1" step="1" value="10000" required></div></label><label class="field">Purchase category<select id="purchaseCategory"><option>Travel</option><option>Shopping</option><option>Food</option><option>Education</option><option>Entertainment</option><option>Bills</option><option>Healthcare</option><option>Other</option></select></label><div class="field"><span class="field-label">Compare cards</span><div id="eligibleCards" class="eligible-list"></div></div><button class="btn btn-primary btn-full" type="submit"><i class="fa-solid fa-sparkles"></i> Find best card</button><p class="tiny muted">Estimates use the sample reward rates configured in your demo cards. Actual rewards depend on issuer terms.</p></form></article><div class="recommend-results" id="recommendResults"><div class="empty-recommend"><div class="empty-illustration"><i class="fa-solid fa-wand-magic-sparkles"></i></div><h3>Your best card is one click away</h3><p>Enter your purchase details and we'll compare your selected cards.</p></div></div></div>
+        </section>
+
+        <section class="page" id="page-insights">
+          <div class="page-heading"><div><p class="eyebrow">DATA THAT MOVES YOU FORWARD</p><h1>Spending insights</h1><p class="muted">Understand your patterns and spot opportunities to save.</p></div><button class="btn btn-outline" id="exportInsights"><i class="fa-solid fa-download"></i> Download report</button></div>
+          <div class="mini-stats" id="insightStats"></div><div class="insights-grid"><article class="panel"><div class="panel-heading"><div><h3>Monthly spending</h3><p class="muted">Your spending trend</p></div></div><div class="chart-wrap tall"><canvas id="insightMonthlyChart"></canvas></div></article><article class="panel"><div class="panel-heading"><div><h3>Category distribution</h3><p class="muted">Where your money goes</p></div></div><div class="chart-wrap tall"><canvas id="insightCategoryChart"></canvas></div></article><article class="panel"><div class="panel-heading"><div><h3>Card utilization</h3><p class="muted">Used credit by card</p></div></div><div class="chart-wrap tall"><canvas id="utilizationChart"></canvas></div></article><article class="panel"><div class="panel-heading"><div><h3>Monthly cashback</h3><p class="muted">Estimated cashback trend</p></div></div><div class="chart-wrap tall"><canvas id="cashbackChart"></canvas></div></article></div><div class="panel insight-box"><div class="insight-heading"><span class="metric-icon violet"><i class="fa-solid fa-lightbulb"></i></span><div><h3>Smart observations</h3><p class="muted">Automatically generated from your transactions</p></div></div><div id="smartInsights" class="smart-insights"></div></div>
+        </section>
+
+        <section class="page" id="page-family">
+          <div class="page-heading"><div><p class="eyebrow">BETTER TOGETHER</p><h1>Family dashboard</h1><p class="muted">A shared view of household spending (demo data).</p></div><button class="btn btn-primary" data-modal="family"><i class="fa-solid fa-user-plus"></i> Add member</button></div>
+          <div class="mini-stats" id="familyStats"></div><div class="family-grid" id="familyGrid"></div><article class="panel"><div class="panel-heading"><div><h3>Family spending by category</h3><p class="muted">Combined household view</p></div></div><div class="chart-wrap"><canvas id="familyChart"></canvas></div></article>
+          <div class="notice-strip"><i class="fa-solid fa-lock"></i><span>This is a single-browser demonstration. It does not provide real multi-user permissions or shared banking access.</span></div>
+        </section>
+
+        <section class="page" id="page-security">
+          <div class="page-heading"><div><p class="eyebrow">STAY ALERT. STAY PROTECTED.</p><h1>Security center</h1><p class="muted">Simple habits that help protect your financial information.</p></div></div>
+          <div class="security-banner"><div class="security-shield"><i class="fa-solid fa-shield-halved"></i></div><div><span class="eyebrow">SECURITY CHECKLIST</span><h2>Your safety starts with awareness.</h2><p>SpendSmart never needs your PIN, CVV or full card number.</p></div><span class="security-status"><i class="fa-solid fa-check-circle"></i> Demo safety tips</span></div>
+          <div class="security-grid"><article class="panel safety-card"><span class="safety-icon blue"><i class="fa-solid fa-lock"></i></span><h3>Protect your credentials</h3><p>Never share your OTP, PIN, CVV or password — even with someone claiming to be from your bank.</p></article><article class="panel safety-card"><span class="safety-icon violet"><i class="fa-solid fa-link-slash"></i></span><h3>Watch for fake links</h3><p>Avoid unknown links in SMS, email and social media. Visit your bank's official app or website directly.</p></article><article class="panel safety-card"><span class="safety-icon amber"><i class="fa-solid fa-bell"></i></span><h3>Enable transaction alerts</h3><p>Turn on instant transaction notifications and review your statements regularly.</p></article><article class="panel safety-card"><span class="safety-icon green"><i class="fa-solid fa-wifi"></i></span><h3>Use secure networks</h3><p>Avoid making financial transactions over public Wi-Fi. Keep your devices and apps updated.</p></article></div>
+          <article class="panel report-panel"><div><h3>Report a suspicious transaction</h3><p class="muted">Create a demo report record. This does not contact your bank.</p></div><form id="fraudForm" class="fraud-form"><label class="field">Merchant / transaction reference<input id="fraudMerchant" required placeholder="e.g. Unknown online merchant"></label><label class="field">What happened?<select id="fraudType"><option>Transaction not recognized</option><option>Card lost or stolen</option><option>Phishing or suspicious message</option><option>Other concern</option></select></label><label class="field">Additional details<textarea id="fraudDetails" rows="3" placeholder="Describe the concern..."></textarea></label><button class="btn btn-primary" type="submit">Submit demo report</button></form><div id="fraudReports" class="fraud-reports"></div></article>
+          <div class="notice-strip warning"><i class="fa-solid fa-triangle-exclamation"></i><span>For an actual unauthorized transaction, immediately contact your card issuer through its official channel and follow applicable bank and regulatory reporting guidance. Liability and timelines depend on your bank and local rules.</span></div>
+        </section>
+
+        <section class="page" id="page-settings">
+          <div class="page-heading"><div><p class="eyebrow">MAKE IT YOURS</p><h1>Settings</h1><p class="muted">Manage your profile and personalize your experience.</p></div></div>
+          <div class="settings-layout"><div class="settings-tabs"><button class="settings-tab active" data-settings="profile"><i class="fa-regular fa-user"></i> Profile</button><button class="settings-tab" data-settings="preferences"><i class="fa-solid fa-sliders"></i> Preferences</button><button class="settings-tab" data-settings="budget"><i class="fa-solid fa-wallet"></i> Budget & limits</button><button class="settings-tab" data-settings="data"><i class="fa-solid fa-database"></i> Demo data</button></div>
+            <div class="panel settings-content" id="settingsContent"></div></div>
+        </section>
+        <footer class="app-footer"><span>© 2026 SpendSmart. Built for smarter everyday finances.</span><span><i class="fa-solid fa-shield-halved"></i> Demo environment · Not connected to any bank</span></footer>
+      </div>
+    </main>
+  </div>
+
+  <div class="modal-backdrop hidden" id="modalBackdrop"><div class="modal" role="dialog" aria-modal="true"><div class="modal-head"><div><p class="eyebrow" id="modalEyebrow">ADD DETAILS</p><h2 id="modalTitle">Add item</h2></div><button class="icon-btn" id="closeModal" aria-label="Close"><i class="fa-solid fa-xmark"></i></button></div><form id="modalForm"><div id="modalFields" class="modal-fields"></div><div class="modal-actions"><button type="button" class="btn btn-outline" id="cancelModal">Cancel</button><button type="submit" class="btn btn-primary" id="modalSubmit">Save changes</button></div></form></div></div>
+  <div class="toast-container" id="toastContainer"></div>
+  <div class="notification-popover hidden" id="notificationPopover"><div class="panel-heading"><h3>Notifications</h3><button class="text-button" id="clearNotifications">Clear</button></div><div id="notificationList"></div></div>
+  <script src="script.js"></script>
+</body>
+</html>
